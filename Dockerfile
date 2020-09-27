@@ -11,6 +11,7 @@ WORKDIR /usr/src/molecule
 RUN apk add -v --progress --update --no-cache \
 docker-py \
 gcc \
+gdbm-dev \
 git \
 libffi-dev \
 libvirt \
@@ -123,6 +124,7 @@ python3 \
 ENV BUILD_DEPS="\
 gcc \
 libc-dev \
+gdbm-dev \
 libvirt-dev \
 make \
 ruby-dev \
