@@ -5,7 +5,7 @@ ARG USERNAME
 RUN apt-get update \
   && mkdir -p /usr/share/man/man1 \
   && apt-get install -y \
-    apt ca-certificates curl git locales openssh-client sudo unzip
+    apt ca-certificates curl git locales openssh-client sudo unzip vim
 
 # Add User
 RUN groupadd --gid 1002 ${USERNAME} \
