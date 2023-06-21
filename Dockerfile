@@ -1,5 +1,7 @@
 FROM python:3-slim
 ARG USERNAME
+ARG GIT_USER_NAME
+ARG GIT_USER_EMAIL
 
 # Install required packages
 RUN apt-get update \
@@ -23,6 +25,10 @@ RUN sudo -u ${USERNAME} pip3 install --user ansible \
                                          molecule-ec2 \
                                          molecule-docker \
                                          ansible-lint
+
+# Configure Git
+RUN sudo -u ${USERNAME} git config --global user.name "${GIT_USER_NAME}" \
+  && sudo -u ${USERNAME} git config --global user.email "${GIT_USER_EMAIL}"
 
 USER ${USERNAME}
 ENV PATH /home/${USERNAME}/.local/bin:/home/${USERNAME}/bin:${PATH}
