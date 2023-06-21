@@ -28,7 +28,9 @@ RUN sudo -u ${USERNAME} pip3 install --user ansible \
 
 # Configure Git
 RUN sudo -u ${USERNAME} git config --global user.name "${GIT_USER_NAME}" \
-  && sudo -u ${USERNAME} git config --global user.email "${GIT_USER_EMAIL}"
+  && sudo -u ${USERNAME} git config --global user.email "${GIT_USER_EMAIL}" \
+  && echo '\n# Unable git completion features.' >> /home/${USERNAME}/.bashrc \
+  && echo 'source /usr/share/bash-completion/completions/git' >> /home/${USERNAME}/.bashrc
 
 USER ${USERNAME}
 ENV PATH /home/${USERNAME}/.local/bin:/home/${USERNAME}/bin:${PATH}
