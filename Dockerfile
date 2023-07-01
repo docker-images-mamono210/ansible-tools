@@ -21,7 +21,7 @@ RUN sudo -u ${USERNAME} pip3 install --user docker
 RUN sudo -u ${USERNAME} pip3 install --user ansible \
                                          boto \
                                          boto3 \
-                                         molecule==5.0.1 \
+                                         molecule==4.0.4 \
                                          ansible-lint
 
 # Install gcloud CLI
