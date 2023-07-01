@@ -37,7 +37,7 @@ jobs:
       - name: Get Ansible version
         id: ansible_version
         run: |
-          tag=$(docker run --rm molecule:preview ansible --version | awk 'NR==1 {print $2}')
+          tag=$(docker run --rm molecule:preview ansible-community --version | awk '{print $4}')
           echo "tag=${tag}" >> $GITHUB_OUTPUT
 
       - name: Get Ansible lint version
@@ -76,7 +76,7 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ghcr.io/docker-images-mamono210/ansible-tools:ansible${{ steps.ansible_version.outputs.tag }}ansible-lint${{ steps.ansible_lint_version.outputs.tag }}molecule${{ steps.molecule_version.outputs.tag }}
+            ghcr.io/docker-images-mamono210/ansible-tools:ansible${{ steps.ansible_version.outputs.tag }}-ansible-lint${{ steps.ansible_lint_version.outputs.tag }}-molecule${{ steps.molecule_version.outputs.tag }}
 
   trailing-whitespace:
     name: Find Trailing Whitespace
