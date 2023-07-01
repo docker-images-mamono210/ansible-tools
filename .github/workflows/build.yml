@@ -22,7 +22,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.CR_PAT }}
 
-      - name: Build and push
+      - name: Build and export to Docker
         uses: docker/build-push-action@v3
         with:
           build-args: |
@@ -30,9 +30,43 @@ jobs:
             GIT_USER_EMAIL=${{ secrets.GIT_USER_EMAIL }}
             GIT_USER_NAME=${{ secrets.GIT_USER_NAME }}
           context: .
+          file: Dockerfile
+          load: true
+          tags: molecule:preview
+
+      - name: Get Ansible version
+        id: ansible_version
+        run: |
+          tag=$(docker run --rm molecule:preview ansible --version | awk 'NR==1 {print $2}')
+          echo "tag=${tag}" >> $GITHUB_OUTPUT         
+
+      - name: Get Ansible lint version
+        id: ansible_lint_version
+        run: |
+          tag=$(docker run --rm molecule:preview ansible-lint --version | awk 'NR==1 {print $2}')
+          echo "tag=${tag}" >> $GITHUB_OUTPUT         
+
+      - name: Get Molecule version
+        id: molecule_version
+        run: |
+          tag=$(docker run --rm molecule:preview molecule --version | awk 'NR==1 {print $2}')
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
+
+      - name: Build and push 1
+        uses: docker/build-push-action@v3
+        with:
           push: true
+          file: Dockerfile
           tags: |
             ghcr.io/docker-images-mamono210/ansible-tools:latest
+
+      - name: Build and push 2
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          file: Dockerfile
+          tags: |
+            ghcr.io/docker-images-mamono210/ansible-tools:ansible${{ steps.ansible_version.outputs.tag }}ansible-lint${{ steps.ansible_lint_version.outputs.tag }}molecule${{ steps.molecule_version.outputs.tag }}
 
   trailing-whitespace:
     name: Find Trailing Whitespace
