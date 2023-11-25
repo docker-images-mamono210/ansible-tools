@@ -21,8 +21,7 @@ RUN sudo -u ${USERNAME} pip3 install --user docker
 RUN sudo -u ${USERNAME} pip3 install --user ansible \
                                          boto \
                                          boto3 \
-                                         molecule \
-                                         molecule-ec2 \
+                                         molecule==5.1.0 \
                                          molecule-docker \
                                          ansible-lint
 
